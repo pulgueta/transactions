@@ -1,0 +1,66 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "performance": {
+        "recommended": true
+      },
+      "recommended": true,
+      "correctness": {
+        "recommended": true
+      },
+      "style": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "include": ["**/*.{ts,tsx,json,yaml}"],
+    "ignore": ["node_modules", "dist", "build", ".turbo", ".changeset"],
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "indentWidth": 2,
+    "indentStyle": "space"
+  },
+  "css": {
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "trailingCommas": "es5",
+      "jsxQuoteStyle": "double"
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "main",
+    "enabled": true,
+    "root": ".",
+    "useIgnoreFile": true
+  }
+}
