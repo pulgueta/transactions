@@ -1,14 +1,15 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import oxlint from "vite-plugin-oxlint";
+import { defineConfig } from "vite";
+import biome from "vite-plugin-biome";
 
 export default defineConfig({
-	plugins: [
-		react(),
-		oxlint({
-			configFile: "eslint.config.js",
-			path: "src",
-			params: "--fix --max-warnings 0",
-		}),
-	],
+  plugins: [
+    biome({
+      applyFixes: true,
+      mode: "check",
+      files: ".",
+      logKind: "pretty",
+    }),
+    react(),
+  ],
 });

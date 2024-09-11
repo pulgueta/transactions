@@ -27,7 +27,7 @@ const config: UserConfig = {
     "scope-enum": [
       RuleConfigSeverity.Error,
       "always",
-      ["admin", "backend", "marketing", "mobile", "ui"],
+      ["frontend", "backend", "ci", "docs", "deps"],
     ],
     "body-max-length": [RuleConfigSeverity.Error, "always", 120],
   },

@@ -1,9 +1,0 @@
-{
-    "**/*.{ts,tsx,js,jsx}": [
-        "pnpm run lint",
-        "pnpm run format"
-    ],
-    "**/*.{json,yaml,md}": [
-        "pnpm run format"
-    ]
-}
