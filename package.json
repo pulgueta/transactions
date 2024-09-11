@@ -1,16 +1,25 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.1.1"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "name": "with-vite"
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"lint": "turbo lint --",
+		"format": "turbo format",
+		"format:ci": "turbo format:ci",
+		"clean": "turbo clean && rm -rf node_modules",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.27.8",
+		"@commitlint/cli": "^19.4.1",
+		"@commitlint/config-conventional": "^19.4.1",
+		"@commitlint/config-lerna-scopes": "^19.0.0",
+		"@commitlint/types": "^19.0.3",
+		"conventional-changelog-atom": "^5.0.0",
+		"husky": "^9.1.5",
+		"lint-staged": "^15.2.10",
+		"turbo": "^2.1.1"
+	},
+	"packageManager": "pnpm@9.7.0",
+	"name": "transactions-app"
 }
