@@ -18,33 +18,6 @@ export const createUser = createInsertSchema(usersTable, {
   phoneNum: string({ required_error: "Phone number is required" })
     .min(8, { message: "Phone number must be at least 8 characters long" })
     .max(10, { message: "Phone number must be at most 10 characters long" }),
-  cardInfo: string({ required_error: "Card info is required" })
-    .min(4, { message: "Card info must be at least 4 characters long" })
-    .max(16, { message: "Card info must be at most 16 characters long" })
-    .regex(
-      /^(4\d{12}(\d{3})?|5[1-5]\d{14}|3[47]\d{13}|2(2[2-9][1-9]|[3-6]\d{2}|7[01]\d|720)\d{12})$/,
-      "You must provide a full valid card number"
-    ),
-  address: string({ required_error: "Address is required" })
-    .min(5, { message: "Address must be at least 5 characters long" })
-    .max(100, { message: "Address must be at most 100 characters long" }),
-  state: string({ required_error: "State is required" })
-    .min(2, { message: "State must be at least 2 characters long" })
-    .max(50, { message: "State must be at most 50 characters long" }),
-  city: string({ required_error: "City is required" })
-    .min(2, {
-      message: "City must be at least 2 characters long",
-    })
-    .max(50, {
-      message: "City must be at most 50 characters long",
-    }),
-  zip: string({ required_error: "Zip code is required" })
-    .min(5, {
-      message: "Zip code must be at least 5 characters long",
-    })
-    .max(10, {
-      message: "Zip code must be at most 10 characters long",
-    }),
 });
 
 export const selectProduct = createSelectSchema(productsTable);
@@ -78,8 +51,70 @@ export const createProduct = createInsertSchema(productsTable, {
     .max(50, { message: "Name must be at most 50 characters long" }),
 });
 
+const luhnCheck = (cardNumber: string) => {
+  let sum = 0;
+
+  let isEven = false;
+
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber.charAt(i), 10);
+
+    if (isEven) {
+      digit *= 2;
+
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    sum += digit;
+
+    isEven = !isEven;
+  }
+
+  return sum % 10 === 0;
+};
+
 export const selectOrder = createSelectSchema(ordersTable);
-export const createOrder = createInsertSchema(ordersTable);
+export const createOrder = createInsertSchema(ordersTable, {
+  nameOnCard: string({ required_error: "Name on card is required" })
+    .min(2, { message: "Name on card must be at least 2 characters long" })
+    .max(50, { message: "Name on card must be at most 50 characters long" }),
+  cardInfo: string({ required_error: "Card info is required" })
+    .min(4, { message: "Card info must be at least 4 characters long" })
+    .max(16, { message: "Card info must be at most 16 characters long" })
+    .regex(/^[0-9]+$/, { message: "Card number must contain only digits" })
+    .refine((val) => luhnCheck(val.replace(/\s/g, "")), {
+      message: "Invalid credit card number",
+    }),
+  expiryDate: string({
+    required_error: "Expiry date is required",
+  }).regex(/^(0[1-9]|1[0-2])\/\d{2}$/, {
+    message: "Invalid expiry date format (use MM/YY)",
+  }),
+  cvv: string()
+    .regex(/^\d{3,4}$/, { message: "CVV must be 3 or 4 digits" })
+    .nonempty({ message: "CVV is required" }),
+  address: string({ required_error: "Address is required" })
+    .min(5, { message: "Address must be at least 5 characters long" })
+    .max(100, { message: "Address must be at most 100 characters long" }),
+  state: string({ required_error: "State is required" })
+    .min(2, { message: "State must be at least 2 characters long" })
+    .max(50, { message: "State must be at most 50 characters long" }),
+  city: string({ required_error: "City is required" })
+    .min(2, {
+      message: "City must be at least 2 characters long",
+    })
+    .max(50, {
+      message: "City must be at most 50 characters long",
+    }),
+  zip: string({ required_error: "Zip code is required" })
+    .min(5, {
+      message: "Zip code must be at least 5 characters long",
+    })
+    .max(10, {
+      message: "Zip code must be at most 10 characters long",
+    }),
+});
 
 export const selectDelivery = createSelectSchema(deliveriesTable);
 export const createDelivery = createInsertSchema(deliveriesTable);
