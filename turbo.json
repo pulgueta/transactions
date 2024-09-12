@@ -4,6 +4,15 @@
 		".env"
 	],
 	"tasks": {
+		"start": {
+			"dependsOn": [
+				"^start"
+			],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				".env*"
+			]
+		},
 		"build": {
 			"dependsOn": [
 				"^build"

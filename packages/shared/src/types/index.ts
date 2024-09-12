@@ -7,8 +7,8 @@ import { productsTable } from "@/schemas/product";
 import { ordersTable } from "@/schemas/order";
 import { deliveriesTable } from "@/schemas/delivery";
 
-const selectUser = createSelectSchema(usersTable);
-const createUser = createInsertSchema(usersTable, {
+export const selectUser = createSelectSchema(usersTable);
+export const createUser = createInsertSchema(usersTable, {
   name: string({ required_error: "Name is required" })
     .min(2, { message: "Name must be at least 2 characters long" })
     .max(50, { message: "Name must be at most 50 characters long" }),
@@ -48,8 +48,8 @@ const createUser = createInsertSchema(usersTable, {
     }),
 });
 
-const selectProduct = createSelectSchema(productsTable);
-const createProduct = createInsertSchema(productsTable, {
+export const selectProduct = createSelectSchema(productsTable);
+export const createProduct = createInsertSchema(productsTable, {
   description: string({ required_error: "Description is required" })
     .min(5, { message: "Description must be at least 5 characters long" })
     .max(100, { message: "Description must be at most 100 characters long" }),
@@ -79,11 +79,11 @@ const createProduct = createInsertSchema(productsTable, {
     .max(50, { message: "Name must be at most 50 characters long" }),
 });
 
-const selectOrder = createSelectSchema(ordersTable);
-const createOrder = createInsertSchema(ordersTable);
+export const selectOrder = createSelectSchema(ordersTable);
+export const createOrder = createInsertSchema(ordersTable);
 
-const selectDelivery = createSelectSchema(deliveriesTable);
-const createDelivery = createInsertSchema(deliveriesTable);
+export const selectDelivery = createSelectSchema(deliveriesTable);
+export const createDelivery = createInsertSchema(deliveriesTable);
 
 export type CreateUser = TypeOf<typeof createUser>;
 export type SelectUser = TypeOf<typeof selectUser>;

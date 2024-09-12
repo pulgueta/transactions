@@ -1,16 +1,24 @@
 {
   "name": "@store/shared",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/index.mjs",
+  "type": "module",
   "exports": {
+    ".": {
+      "import": {
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    },
     "./zod": {
-      "import": "./dist/types/index.mjs",
-      "types": "./dist/types/index.d.mts"
+      "import": {
+        "import": "./dist/types/index.js",
+        "types": "./dist/types/index.d.ts"
+      }
     },
     "./tables": {
-      "import": "./dist/schemas/index.mjs",
-      "types": "./dist/schemas/index.d.ts"
+      "import": {
+        "import": "./dist/schemas/index.js",
+        "types": "./dist/schemas/index.d.ts"
+      }
     }
   },
   "scripts": {
