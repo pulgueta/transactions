@@ -4,7 +4,6 @@ import { createId } from '@paralleldrive/cuid2';
 
 import { usersTable } from './user';
 import { productsTable } from './product';
-import { relations } from 'drizzle-orm';
 
 export const ordersTable = pgTable('orders', {
   id: text('id')
@@ -25,7 +24,3 @@ export const ordersTable = pgTable('orders', {
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').$onUpdateFn(() => new Date()),
 });
-
-export const ordersRelations = relations(ordersTable, ({many}) => ({
-  products: many(productsTable),
-}))

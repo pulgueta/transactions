@@ -1,24 +1,32 @@
 {
   "name": "@store/shared",
+  "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
-      "import": {
-        "import": "./dist/index.js",
-        "types": "./dist/index.d.ts"
-      }
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
     },
     "./zod": {
-      "import": {
-        "import": "./dist/types/index.js",
-        "types": "./dist/types/index.d.ts"
-      }
+      "import": "./dist/zod/index.js",
+      "types": "./dist/zod/index.d.ts",
+      "require": "./dist/zod/index.cjs"
     },
-    "./tables": {
-      "import": {
-        "import": "./dist/schemas/index.js",
-        "types": "./dist/schemas/index.d.ts"
-      }
+    "./schemas": {
+      "import": "./dist/schemas/index.js",
+      "types": "./dist/schemas/index.d.ts",
+      "require": "./dist/schemas/index.cjs"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/types/index.cjs"
     }
   },
   "scripts": {

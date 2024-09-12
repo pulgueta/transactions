@@ -4,8 +4,9 @@ export default defineConfig({
   clean: true,
   dts: true,
   entry: ["src"],
-  format: ["esm"],
+  format: ["esm", "cjs"],
   minify: true,
   splitting: true,
   treeshake: true,
+  outDir: "dist",
 });
