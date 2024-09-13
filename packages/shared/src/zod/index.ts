@@ -51,28 +51,28 @@ export const createProduct = createInsertSchema(productsTable, {
     .max(50, { message: "Name must be at most 50 characters long" }),
 });
 
-const luhnCheck = (cardNumber: string) => {
-  let sum = 0;
+// const luhnCheck = (cardNumber: string) => {
+//   let sum = 0;
 
-  let isEven = false;
+//   let isEven = false;
 
-  for (let i = cardNumber.length - 1; i >= 0; i--) {
-    let digit = parseInt(cardNumber.charAt(i), 10);
+//   for (let i = cardNumber.length - 1; i >= 0; i--) {
+//     let digit = parseInt(cardNumber.charAt(i), 10);
 
-    if (isEven) {
-      digit *= 2;
+//     if (isEven) {
+//       digit *= 2;
 
-      if (digit > 9) {
-        digit -= 9;
-      }
-    }
-    sum += digit;
+//       if (digit > 9) {
+//         digit -= 9;
+//       }
+//     }
+//     sum += digit;
 
-    isEven = !isEven;
-  }
+//     isEven = !isEven;
+//   }
 
-  return sum % 10 === 0;
-};
+//   return sum % 10 === 0;
+// };
 
 export const selectOrder = createSelectSchema(ordersTable);
 export const createOrder = createInsertSchema(ordersTable, {
@@ -82,10 +82,10 @@ export const createOrder = createInsertSchema(ordersTable, {
   cardInfo: string({ required_error: "Card info is required" })
     .min(4, { message: "Card info must be at least 4 characters long" })
     .max(16, { message: "Card info must be at most 16 characters long" })
-    .regex(/^[0-9]+$/, { message: "Card number must contain only digits" })
-    .refine((val) => luhnCheck(val.replace(/\s/g, "")), {
-      message: "Invalid credit card number",
-    }),
+    .regex(/^[0-9]+$/, { message: "Card number must contain only digits" }),
+  // .refine((val) => luhnCheck(val.replace(/\s/g, "")), {
+  //   message: "Invalid credit card number",
+  // }),
   expiryDate: string({
     required_error: "Expiry date is required",
   }).regex(/^(0[1-9]|1[0-2])\/\d{2}$/, {

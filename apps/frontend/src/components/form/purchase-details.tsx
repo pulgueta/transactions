@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import type { RootState } from "@/store";
 import type { FormState } from "@/store/slices/formSlice";
 import { updateFormField } from "@/store/slices/formSlice";
+import { openDrawer } from "@/store/slices/drawerSlice";
 
 export const PurchaseDetails = () => {
   const [cardType, setCardType] = useState<string>("");
@@ -24,7 +25,7 @@ export const PurchaseDetails = () => {
 
   const form = useForm<FormState>({
     resolver: zodResolver(createOrder),
-    defaultValues: useSelector((s: RootState) => s.form),
+    defaultValues: savedFormData,
     resetOptions: {
       keepDefaultValues: true,
       keepDirty: false,
@@ -54,7 +55,10 @@ export const PurchaseDetails = () => {
     return "Unknown card provider";
   };
 
-  const onSubmit = form.handleSubmit(() => {});
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(openDrawer());
+  };
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -71,7 +75,7 @@ export const PurchaseDetails = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [form.watch, dispatch, savedFormData]);
+  }, [form.watch, dispatch, savedFormData, form]);
 
   return (
     <Form {...form}>
@@ -131,12 +135,7 @@ export const PurchaseDetails = () => {
             name="expiryDate"
             label="Expiration date"
             render={({ field }) => (
-              <Input
-                {...field}
-                className="w-32 md:w-full"
-                placeholder="MM/YY"
-                autoComplete="cc-exp"
-              />
+              <Input {...field} placeholder="MM/YY" autoComplete="cc-exp" />
             )}
           />
 
@@ -144,12 +143,7 @@ export const PurchaseDetails = () => {
             name="cvv"
             label="CVV"
             render={({ field }) => (
-              <Input
-                {...field}
-                className="w-32 md:w-full"
-                placeholder="123"
-                autoComplete="cc-csc"
-              />
+              <Input {...field} placeholder="123" autoComplete="cc-csc" />
             )}
           />
 
@@ -159,7 +153,6 @@ export const PurchaseDetails = () => {
             render={({ field }) => (
               <Input
                 {...field}
-                className="w-32 md:w-full"
                 placeholder="123 Main St"
                 autoComplete="shipping street-address"
               />
@@ -169,37 +162,21 @@ export const PurchaseDetails = () => {
           <FormComponent
             name="city"
             label="City"
-            render={({ field }) => (
-              <Input
-                {...field}
-                className="w-32 md:w-full"
-                placeholder="Jackson"
-              />
-            )}
+            render={({ field }) => <Input {...field} placeholder="Jackson" />}
           />
 
           <FormComponent
             name="state"
             label="State"
             render={({ field }) => (
-              <Input
-                {...field}
-                className="w-32 md:w-full"
-                placeholder="New Jersey"
-              />
+              <Input {...field} placeholder="New Jersey" />
             )}
           />
 
           <FormComponent
             name="zip"
             label="Zip Code"
-            render={({ field }) => (
-              <Input
-                {...field}
-                className="w-32 md:w-full"
-                placeholder="123 678"
-              />
-            )}
+            render={({ field }) => <Input {...field} placeholder="123 678" />}
           />
         </div>
         <Button>Go to order details</Button>

@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import formReducer from "./slices/formSlice";
+import drawerReducer from "./slices/drawerSlice";
 
 export const store = configureStore({
   reducer: {
     form: formReducer,
+    drawer: drawerReducer,
   },
 });
 

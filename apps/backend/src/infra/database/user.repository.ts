@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 
-import type { CreateUser, SelectUser } from '@store/shared/dist';
+import { CreateUser, SelectUser } from '@store/shared/dist';
 
 import { UserRepository } from '@/domain/repositories/user.repository';
 import { usersTable } from './schemas';
 import { databaseModule } from './database.module';
-import type { Database } from './database';
+import { Database } from './database';
 
 export class DatabaseUserRepository implements UserRepository {
   constructor(@Inject(databaseModule) private db: Database) {}

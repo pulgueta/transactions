@@ -1,4 +1,4 @@
-import type { CreateUser, SelectUser } from '@store/shared';
+import { CreateUser, SelectUser } from '@store/shared';
 
 export interface UserRepository {
   create(user: CreateUser): Promise<SelectUser>;
