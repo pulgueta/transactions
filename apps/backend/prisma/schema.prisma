@@ -8,34 +8,32 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  name        String
-  phoneNumber String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Order       Order[]
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order[]
 }
 
 model Order {
-  id          String      @id @default(cuid())
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
-  orderTotal  Float
-  nameOnCard  String
-  cardInfo    String
-  expiryDate  String
-  cvv         String
-  address     String
-  city        String
-  state       String
-  zip         String
+  id          String       @id @default(cuid())
+  userId      String?
+  user        User?        @relation(fields: [userId], references: [id])
+  orderTotal  Float?
+  nameOnCard  String?
+  cardInfo    String?
+  expiryDate  String?
+  cvv         String?
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  last4Digits String?
   products    Product[]
-  last4Digits String
-  status      OrderStatus @default(PENDING)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
   Delivery    Delivery[]
+  status      OrderStatus? @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Product {
@@ -53,7 +51,7 @@ model Product {
 model Delivery {
   id        String         @id @default(cuid())
   orderId   String
-  order     Order          @relation(fields: [orderId], references: [id])
+  order     Order?         @relation(fields: [orderId], references: [id])
   status    DeliveryStatus @default(PENDING)
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
