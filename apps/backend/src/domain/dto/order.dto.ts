@@ -2,13 +2,29 @@ import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsNotEmpty,
   IsNumber,
   IsString,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { Order, OrderStatus } from '@prisma/client';
+
+export class CreateOrderProductDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  readonly productId: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  readonly stock: number;
+}
 
 export class CreateOrderDTO {
   @IsNumber()
@@ -102,12 +118,31 @@ export class CreateOrderDTO {
   })
   readonly zip: Order['zip'];
 
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(4)
+  @MaxLength(4)
+  @ApiProperty({
+    required: true,
+    minLength: 4,
+    maxLength: 4,
+    example: '2800',
+  })
+  readonly last4Digits: Order['last4Digits'];
+
   @ApiProperty({
     required: false,
     example: 'COMPLETED',
     enum: OrderStatus,
   })
   readonly status: Order['status'];
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderProductDTO)
+  @ApiProperty({ required: true, type: [CreateOrderProductDTO] })
+  readonly products: CreateOrderProductDTO[];
 }
 
 export class UpdateOrderDTO extends PartialType(CreateOrderDTO) {}

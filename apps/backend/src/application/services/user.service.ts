@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@prisma/client';
+import { Order, User } from '@prisma/client';
 
 import { DatabaseService } from './database.service';
 import { UserRepository } from '@/domain/repositories/user.repository';
@@ -9,46 +9,36 @@ import { UserRepository } from '@/domain/repositories/user.repository';
 export class UsersService implements UserRepository {
   constructor(private db: DatabaseService) {}
 
-  async create(user: User): Promise<User> {
-    const newUser = await this.db.user.create({
-      data: {
-        name: user.name,
-      },
-    });
-
-    return newUser;
-  }
-
-  async findOne(id: User['id']) {
-    const user = await this.db.user.findUnique({
+  async findOne(name: User['name']) {
+    const user = await this.db.user.findFirst({
       where: {
-        id,
+        name,
       },
     });
-
-    if (!user) {
-      return null;
-    }
 
     return user;
   }
 
-  async update(user: Partial<User>, id: User['id']) {
-    const updatedUser = await this.db.user.update({
+  async updateUserOrder(order: Order, id: User['id']) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { userId, ...updatedOrder } = order;
+
+    const updatedUserOrder = await this.db.user.update({
       where: {
         id,
       },
-      data: user,
-    });
-
-    return updatedUser;
-  }
-
-  async delete(id: User['id']) {
-    await this.db.user.delete({
-      where: {
-        id,
+      data: {
+        Order: {
+          update: {
+            data: updatedOrder,
+            where: {
+              id: order.id,
+            },
+          },
+        },
       },
     });
+
+    return updatedUserOrder;
   }
 }

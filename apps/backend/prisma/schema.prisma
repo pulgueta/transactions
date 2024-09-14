@@ -16,9 +16,9 @@ model User {
 }
 
 model Order {
-  id          String       @id @default(cuid())
+  id          String            @id @default(cuid())
   userId      String?
-  user        User?        @relation(fields: [userId], references: [id])
+  user        User?             @relation(fields: [userId], references: [id])
   orderTotal  Float?
   nameOnCard  String?
   cardInfo    String?
@@ -29,32 +29,42 @@ model Order {
   state       String?
   zip         String?
   last4Digits String?
-  products    Product[]
+  products    ProductRelation[]
   Delivery    Delivery[]
-  status      OrderStatus? @default(PENDING)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  status      OrderStatus?      @default(PENDING)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model ProductRelation {
+  productId String
+  product   Product? @relation(fields: [productId], references: [id])
+  stock     Int
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   String
+
+  @@id([productId, orderId])
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  imageUrl    String
-  stock       Int
-  description String
-  price       Float
-  Order       Order[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String            @id @default(cuid())
+  name            String
+  imageUrl        String
+  stock           Int
+  description     String
+  price           Float
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ProductRelation ProductRelation[]
 }
 
 model Delivery {
-  id        String         @id @default(cuid())
+  id        String          @id @default(cuid())
   orderId   String
-  order     Order?         @relation(fields: [orderId], references: [id])
-  status    DeliveryStatus @default(PENDING)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  order     Order?          @relation(fields: [orderId], references: [id])
+  status    DeliveryStatus? @default(PENDING)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 enum OrderStatus {

@@ -1,6 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
-
-import { User } from '@prisma/client';
+import { Controller } from '@nestjs/common';
 
 import { UsersService } from '@/application/services/user.service';
 
@@ -8,8 +6,8 @@ import { UsersService } from '@/application/services/user.service';
 export class UserController {
   constructor(private readonly userService: UsersService) {}
 
-  @Post('/')
-  async createUser(@Body('user') user: User): Promise<User> {
-    return this.userService.create(user);
-  }
+  // @Post('/')
+  // async createUser(@Body('user') user: User): Promise<User> {
+  //   return this.userService.create(user);
+  // }
 }

@@ -1,19 +1,64 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Order } from '@prisma/client';
+import { Order, User } from '@prisma/client';
 
-import { DatabaseService } from './database.service';
 import { OrderRepository } from '@/domain/repositories/order.repository';
 import { CreateOrderDTO, UpdateOrderDTO } from '@/domain/dto/order.dto';
+import { DatabaseService } from './database.service';
+import { UsersService } from './user.service';
+import { DeliveriesService } from './delivery.service';
+import { ProductsService } from './product.service';
+import { Argon2HashingService } from './hashing.service';
 
 @Injectable()
 export class OrdersService implements OrderRepository {
-  constructor(private db: DatabaseService) {}
+  constructor(
+    private db: DatabaseService,
+    private users: UsersService,
+    private deliveries: DeliveriesService,
+    private products: ProductsService,
+    private hasher: Argon2HashingService,
+  ) {}
 
-  async createInitialOrder() {
+  async findAll(name: User['name']) {
+    const orders = await this.db.order.findMany({
+      where: {
+        nameOnCard: name,
+      },
+      include: {
+        products: {
+          include: {
+            product: true,
+          },
+        },
+        Delivery: true,
+      },
+    });
+
+    if (orders.length === 0) {
+      throw new NotFoundException('No orders found');
+    }
+
+    const ordersWithPurchasedQuantity = orders.map((order) => ({
+      ...order,
+      products: order.products.map((productRelation) => ({
+        ...productRelation.product,
+        quantityPurchased: productRelation.stock,
+      })),
+    }));
+
+    return ordersWithPurchasedQuantity;
+  }
+
+  async createInitialOrder(name: User['name']) {
     const initialOrder = await this.db.order.create({
       data: {
         status: 'PENDING',
+        user: {
+          create: {
+            name,
+          },
+        },
       },
     });
 
@@ -21,36 +66,25 @@ export class OrdersService implements OrderRepository {
   }
 
   async create(id: Order['id'], order: CreateOrderDTO) {
-    const user = await this.db.user.create({
-      data: {
-        name: order.nameOnCard ?? '',
-      },
-    });
+    const userExists = await this.users.findOne(order.nameOnCard ?? '');
 
-    const newOrder = await this.db.order.update({
-      data: {
-        address: order.address,
-        cardInfo: order.cardInfo,
-        city: order.city,
-        cvv: order.cvv,
-        expiryDate: order.expiryDate,
-        orderTotal: order.orderTotal,
-        userId: user.id,
-        last4Digits: order.cardInfo?.slice(-4) ?? '',
-        nameOnCard: order.nameOnCard,
-        state: order.state,
-        zip: order.zip,
+    const newOrder = await this.update(
+      {
+        ...order,
+        userId: userExists?.id,
         status: 'COMPLETED',
       },
-      where: {
-        id,
-      },
-    });
+      id,
+    );
 
-    return {
-      order: newOrder,
-      user,
-    };
+    await Promise.all([
+      this.users.updateUserOrder(newOrder, userExists?.id ?? ''),
+      this.deliveries.create({
+        orderId: newOrder.id,
+      }),
+    ]);
+
+    return newOrder;
   }
 
   async findOne(id: Order['id']) {
@@ -67,22 +101,37 @@ export class OrdersService implements OrderRepository {
     return order;
   }
 
-  async update(order: UpdateOrderDTO, id: Order['id']) {
+  async update(order: UpdateOrderDTO & { userId?: string }, id: Order['id']) {
+    const { products, ...orderData } = order;
+
     const updatedOrder = await this.db.order.update({
-      where: {
-        id,
+      where: { id },
+      data: {
+        ...orderData,
+        cardInfo: await this.hasher.hash(orderData.cardInfo ?? ''),
       },
-      data: order,
     });
+
+    if (products && products.length > 0) {
+      await this.db.productRelation.deleteMany({
+        where: { orderId: id },
+      });
+
+      for (const product of products) {
+        const { productId, stock } = product;
+
+        await this.products.decreaseStock(productId, stock);
+
+        await this.db.productRelation.create({
+          data: {
+            orderId: id,
+            productId: productId,
+            stock: stock,
+          },
+        });
+      }
+    }
 
     return updatedOrder;
-  }
-
-  async delete(id: Order['id']) {
-    await this.db.order.delete({
-      where: {
-        id,
-      },
-    });
   }
 }
