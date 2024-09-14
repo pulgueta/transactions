@@ -1,9 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { CreateOrder } from "@store/shared/types";
+
+import type { FrontendOrder } from "backend/react";
 
 export type FormState = Pick<
-  CreateOrder,
+  FrontendOrder,
   | "nameOnCard"
   | "cardInfo"
   | "cvv"

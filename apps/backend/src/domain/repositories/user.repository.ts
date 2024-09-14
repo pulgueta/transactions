@@ -1,9 +1,8 @@
-import { CreateUser, SelectUser } from '@store/shared';
+import { User } from '@prisma/client';
 
 export interface UserRepository {
-  create(user: CreateUser): Promise<SelectUser>;
-  update(user: Partial<SelectUser>, id: SelectUser['id']): Promise<SelectUser>;
-  findById(id: SelectUser['id']): Promise<SelectUser | null>;
-  findByEmail(email: SelectUser['email']): Promise<SelectUser | null>;
-  delete(id: SelectUser['id']): Promise<void>;
+  create(user: User): Promise<User>;
+  update(user: Partial<User>, email: User['email']): Promise<User | null>;
+  findOne(email: User['email']): Promise<User | null>;
+  delete(email: User['email']): Promise<void | null>;
 }

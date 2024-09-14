@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CreditCard } from "lucide-react";
 
-import { createOrder } from "@store/shared/zod";
-
 import { Form, FormComponent } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +14,7 @@ import type { RootState } from "@/store";
 import type { FormState } from "@/store/slices/formSlice";
 import { updateFormField } from "@/store/slices/formSlice";
 import { openDrawer } from "@/store/slices/drawerSlice";
+import { createOrder } from "@/schemas/order";
 
 export const PurchaseDetails = () => {
   const [cardType, setCardType] = useState<string>("");

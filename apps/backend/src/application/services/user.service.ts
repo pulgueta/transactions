@@ -1,35 +1,74 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateUser, SelectUser } from '@store/shared';
+import { User } from '@prisma/client';
 
+import { DatabaseService } from './database.service';
 import { UserRepository } from '@/domain/repositories/user.repository';
 
 @Injectable()
-export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+export class UsersService implements UserRepository {
+  constructor(private db: DatabaseService) {}
 
-  async createUser(user: CreateUser): Promise<SelectUser> {
-    return this.userRepository.create(user);
+  async create(user: User): Promise<User> {
+    const userExists = await this.db.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (userExists) {
+      throw new Error('User already exists');
+    }
+
+    const newUser = await this.db.user.create({
+      data: user,
+    });
+
+    return newUser;
   }
 
-  async getUserByEmail(email: SelectUser['email']): Promise<SelectUser | null> {
-    return this.userRepository.findByEmail(email);
+  async findOne(email: User['email']) {
+    const user = await this.db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
   }
 
-  async getUserById(id: SelectUser['id']): Promise<SelectUser | null> {
-    return this.userRepository.findById(id);
+  async update(user: Partial<User>, email: User['email']) {
+    const userExists = await this.findOne(email);
+
+    if (!userExists) {
+      return null;
+    }
+
+    const updatedUser = await this.db.user.update({
+      where: {
+        email,
+      },
+      data: user,
+    });
+
+    return updatedUser;
   }
 
-  async updateUser(
-    user: Partial<SelectUser>,
-    id: SelectUser['id'],
-  ): Promise<SelectUser> {
-    return this.userRepository.update(user, id);
-  }
+  async delete(email: User['email']) {
+    const user = await this.findOne(email);
 
-  async deleteUser(id: SelectUser['id']): Promise<void> {
-    // DELETE/WHERE clause is not handled by this repository, causing a false positive to the ESLint
-    // eslint-disable-next-line drizzle/enforce-delete-with-where
-    return this.userRepository.delete(id);
+    if (!user) {
+      return null;
+    }
+
+    await this.db.user.delete({
+      where: {
+        email,
+      },
+    });
   }
 }
