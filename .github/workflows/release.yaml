@@ -43,3 +43,21 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm i
+
+      - name: Build project
+        run: |
+          pnpm build
+          cd apps/backend
+          zip -r transactions-backend.zip . -x '*.git*' -x 'node_modules/*'
+      
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          region: ${{ secrets.AWS_REGION }}
+          use_existing_version_if_available: true
+          application_name: ${{ secrets.AWS_APPLICATION_NAME }}
+          version_label: ${{ secrets.AWS_APPLICATION_NAME }}-${{ github.sha }}
+          deployment_package: transactions-backend.zip
+          environment_name: ${{ secrets.AWS_ENVIRONMENT_NAME }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
