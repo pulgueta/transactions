@@ -1,7 +1,6 @@
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CreditCard } from "lucide-react";
@@ -10,19 +9,32 @@ import { Form, FormComponent } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { RootState } from "@/store";
-import type { FormState } from "@/store/slices/formSlice";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { updateFormField } from "@/store/slices/formSlice";
-import { openDrawer } from "@/store/slices/drawerSlice";
+import { toggleDrawer } from "@/store/slices/drawerSlice";
 import { createOrder } from "@/schemas/order";
+import { FrontendOrder } from "backend/react";
+
+type FormProps = Pick<
+  FrontendOrder,
+  | "address"
+  | "cardInfo"
+  | "city"
+  | "cvv"
+  | "expiryDate"
+  | "nameOnCard"
+  | "state"
+  | "zip"
+>;
 
 export const PurchaseDetails = () => {
   const [cardType, setCardType] = useState<string>("");
 
-  const dispatch = useDispatch();
-  const savedFormData = useSelector((state: RootState) => state.form);
+  const dispatch = useAppDispatch();
 
-  const form = useForm<FormState>({
+  const savedFormData = useAppSelector((state) => state.form);
+
+  const form = useForm<FormProps>({
     resolver: zodResolver(createOrder),
     defaultValues: savedFormData,
     resetOptions: {
@@ -54,14 +66,13 @@ export const PurchaseDetails = () => {
     return "Unknown card provider";
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(openDrawer());
-  };
+  const onSubmit = form.handleSubmit(() => {
+    dispatch(toggleDrawer());
+  });
 
   useEffect(() => {
     const subscription = form.watch((value) => {
-      (Object.keys(value) as Array<keyof FormState>).forEach((field) => {
+      (Object.keys(value) as Array<keyof FormProps>).forEach((field) => {
         if (value[field] !== savedFormData[field]) {
           dispatch(
             updateFormField({
@@ -91,6 +102,8 @@ export const PurchaseDetails = () => {
                 {...field}
                 placeholder="Yeison Barajas"
                 autoComplete="billing name"
+                min={4}
+                max={100}
               />
             )}
           />
@@ -105,6 +118,8 @@ export const PurchaseDetails = () => {
                   onChange={onCreditCardChange}
                   autoComplete="cc-number"
                   placeholder="1234 1234 1234 1234"
+                  minLength={4}
+                  maxLength={16}
                 />
               )}
             />
@@ -134,7 +149,12 @@ export const PurchaseDetails = () => {
             name="expiryDate"
             label="Expiration date"
             render={({ field }) => (
-              <Input {...field} placeholder="MM/YY" autoComplete="cc-exp" />
+              <Input
+                {...field}
+                placeholder="MM/YY"
+                autoComplete="cc-exp"
+                maxLength={5}
+              />
             )}
           />
 
@@ -142,7 +162,12 @@ export const PurchaseDetails = () => {
             name="cvv"
             label="CVV"
             render={({ field }) => (
-              <Input {...field} placeholder="123" autoComplete="cc-csc" />
+              <Input
+                {...field}
+                placeholder="123"
+                autoComplete="cc-csc"
+                maxLength={4}
+              />
             )}
           />
 
@@ -154,6 +179,7 @@ export const PurchaseDetails = () => {
                 {...field}
                 placeholder="123 Main St"
                 autoComplete="shipping street-address"
+                maxLength={100}
               />
             )}
           />
