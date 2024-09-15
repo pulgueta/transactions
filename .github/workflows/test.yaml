@@ -1,4 +1,4 @@
-name: Format and Lint code
+name: Run tests
 
 on:
   pull_request:
