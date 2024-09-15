@@ -11,7 +11,14 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    allowedHeaders: '*',
+    methods: ['GET', 'POST'],
+    origin: [
+      'http://localhost:5173',
+      process.env.PRODUCTION_FRONTEND_URL ?? '',
+    ],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Transaction API')

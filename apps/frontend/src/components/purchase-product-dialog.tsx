@@ -14,6 +14,7 @@ import { OrderSummary } from "./order/order-summary";
 import { useAppDispatch } from "@/store";
 import { addProduct } from "@/store/slices/productSlice";
 import type { Product } from "@/store/slices/productSlice";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 
 export const PurchaseProductDialog: FC<Product> = (prod) => {
   const dispatch = useAppDispatch();
@@ -39,10 +40,15 @@ export const PurchaseProductDialog: FC<Product> = (prod) => {
             </DialogDescription>
           </DialogHeader>
 
-          <PurchaseDetails />
+          <LazyLoadComponent>
+            <PurchaseDetails />
+          </LazyLoadComponent>
         </DialogContent>
       </Dialog>
-      <OrderSummary />
+
+      <LazyLoadComponent>
+        <OrderSummary />
+      </LazyLoadComponent>
     </>
   );
 };

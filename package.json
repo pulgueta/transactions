@@ -4,6 +4,8 @@
 		"start": "dotenv -- turbo start",
 		"build": "dotenv -- turbo build",
 		"dev": "dotenv -- turbo dev",
+		"test": "dotenv -- turbo test",
+		"test:watch": "dotenv -- turbo test:watch",
 		"lint": "turbo lint --",
 		"format": "turbo format",
 		"format:ci": "turbo format:ci",

@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse } from '@nestjs/swagger';
 
-import { OrdersService } from '@/application/services/order.service';
-import { CreateOrderDTO } from '@/domain/dto/order.dto';
-import { OrderEntity } from '@/domain/entities/order.entity';
-import { FetcherService } from '@/application/services/fetcher.service';
+import { OrdersService } from '../../../application/services/order.service';
+import { CreateOrderDTO } from '../../../domain/dto/order.dto';
+import { OrderEntity } from '../../../domain/entities/order.entity';
+import { FetcherService } from '../../../application/services/fetcher.service';
 import { AcceptanceTokenResponse } from '@/types/acceptance-token';
 import { CardTokenResponse } from '@/types/card-token';
 import { TransactionResponse } from '@/types/transaction';

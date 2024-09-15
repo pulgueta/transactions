@@ -1,4 +1,8 @@
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 import type { FC } from "react";
+
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import type { Product } from "@/types";
 
@@ -43,10 +47,11 @@ export const ProductCard: FC<Product> = (product) => {
       key={product.id}
       className="flex w-full max-w-sm flex-col items-start justify-between rounded border p-4"
     >
-      <img
+      <LazyLoadImage
         src={product.imageUrl}
         alt={product.name}
-        className="h-full max-h-64 w-full rounded object-cover"
+        effect="blur"
+        className="h-full max-h-64 min-h-64 w-full rounded object-cover"
       />
 
       <h2 className="text-xl font-semibold tracking-tight">{product.name}</h2>

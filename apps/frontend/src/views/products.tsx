@@ -1,4 +1,4 @@
-import { useGetProductsQuery } from "@/api";
+import { useGetProductsQuery } from "../api";
 import { ProductCard } from "@/components/product-card";
 
 export const Products = () => {
