@@ -1,0 +1,37 @@
+name: Build and push docker image
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        description: 'Dockerfile to use'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Login to docker.io
+        run: docker login --username ${{ secrets.DOCKER_HUB_USER }} --password ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Extract folder name from image name
+        id: extract_folder_name
+        run: |
+          FOLDER_NAME=$(echo aws-backend | sed -E 's/^(.*?)-.*$/\1/' | tr '[:upper:]' '[:lower:]')
+          echo "::set-output name=folder_name::$FOLDER_NAME"
+
+      - name: Build Docker image
+        run: |
+          DOCKER_FOLDER=$(echo ${{ steps.extract_folder_name.outputs.folder_name }})
+          DOCKERFILE_PATH="./apps/${DOCKER_FOLDER}/Dockerfile"
+          DOCKER_TAG="${{ secrets.DOCKER_HUB_USER }}/transactions-backend"
+          DOCKER_DEFAULT_PLATFORM=linux/amd64 docker build -t $DOCKER_TAG -f $DOCKERFILE_PATH .
+
+      - name: Push docker image
+        run: docker push ${{ secrets.DOCKER_HUB_USER }}/transactions-backend
