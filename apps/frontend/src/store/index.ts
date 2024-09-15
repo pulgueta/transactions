@@ -7,6 +7,7 @@ import { productsApi } from "@/api";
 import formReducer from "./slices/formSlice";
 import drawerReducer from "./slices/drawerSlice";
 import productsReducer from "./slices/productSlice";
+import quantityReducer from "./slices/quantitySlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     form: formReducer,
     drawer: drawerReducer,
     products: productsReducer,
+    quantity: quantityReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(productsApi.middleware),

@@ -25,7 +25,7 @@ export const OrderSummary = () => {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={close}>
-      <AlertDialogContent className="h-full max-h-[36rem] w-full max-w-xs overflow-y-scroll rounded md:max-h-[44rem] md:max-w-2xl md:overflow-auto lg:max-w-3xl">
+      <AlertDialogContent className="h-full max-h-[36rem] w-full max-w-xs overflow-y-scroll rounded md:max-h-[46rem] md:max-w-2xl md:overflow-auto lg:max-w-3xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Your order details</AlertDialogTitle>
           <AlertDialogDescription>

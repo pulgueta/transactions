@@ -1,17 +1,23 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Products } from "@/views/products";
-import { Summary } from "@/views/summary";
+import { Orders } from "@/views/orders";
+import { Layout } from "./layout";
 
 const router = createBrowserRouter([
   {
-    index: true,
-    path: "/",
-    element: <Products />,
-  },
-  {
-    path: "/summary",
-    element: <Summary />,
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        path: "/",
+        element: <Products />,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
+      },
+    ],
   },
 ]);
 

@@ -117,7 +117,7 @@ export class OrderController {
     );
 
     if (transactionResult.data.status !== 'APPROVED') {
-      await this.ordersService.update({ status: 'CANCELLED' }, initialOrder.id);
+      await this.ordersService.cancel(initialOrder.id);
 
       throw new BadRequestException('Transaction was not approved');
     }

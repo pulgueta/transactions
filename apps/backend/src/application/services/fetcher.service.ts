@@ -17,7 +17,7 @@ export class FetcherService {
     if (!res.ok) {
       const data = await res.json();
 
-      console.error(data);
+      console.error(data.error.messages);
 
       throw new BadRequestException(res.statusText);
     }
@@ -44,7 +44,7 @@ export class FetcherService {
     if (!res.ok) {
       const data = await res.json();
 
-      console.error(data);
+      console.error(data.error.messages);
 
       throw new BadRequestException(res.statusText);
     }

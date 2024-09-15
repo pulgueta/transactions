@@ -6,53 +6,36 @@ import type { FrontendProduct } from "backend/react";
 export type Product = Pick<
   FrontendProduct,
   "id" | "name" | "imageUrl" | "stock" | "description" | "price"
->;
+> & { quantity: number };
 
-export type FormState = Product[] | undefined;
-
-const initialState: FormState = [];
-
-const saveState = (state: FormState) => {
-  localStorage.setItem("products", JSON.stringify(state));
-};
-
-const loadState = (): FormState => {
-  const savedState = localStorage.getItem("products");
-
-  return savedState ? JSON.parse(savedState) : initialState;
+const initialState: Product = {
+  id: "",
+  name: "",
+  imageUrl: "",
+  stock: 0,
+  description: "",
+  price: 0,
+  quantity: 1,
 };
 
 const productSlice = createSlice({
-  name: "form",
-  initialState: loadState(),
+  name: "product",
+  initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<Product>) => {
-      if (!state) {
-        state = [];
-      }
-
-      state.push(action.payload);
-
-      saveState(state);
+    addProduct: (_, action: PayloadAction<Product>) => {
+      return action.payload;
     },
-    removeProduct: (state, action: PayloadAction<string>) => {
+    updateQuantity: (state: Product, action: PayloadAction<number>) => {
       if (state) {
-        const updatedState = state.filter(
-          (product) => product.id !== action.payload
-        );
-
-        saveState(updatedState);
-
-        return updatedState;
+        return { ...state, quantity: action.payload };
       }
+      return state;
     },
-    resetProducts: () => {
-      localStorage.removeItem("products");
-      return initialState;
-    },
+    removeProduct: () => initialState,
   },
 });
 
-export const { addProduct, resetProducts, removeProduct } =
+export const { addProduct, updateQuantity, removeProduct } =
   productSlice.actions;
+
 export default productSlice.reducer;

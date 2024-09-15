@@ -25,29 +25,14 @@ export class OrdersService implements OrderRepository {
       where: {
         nameOnCard: name,
       },
-      include: {
-        products: {
-          include: {
-            product: true,
-          },
-        },
-        Delivery: true,
-      },
+      include: { Delivery: true, product: true },
     });
 
     if (orders.length === 0) {
       throw new NotFoundException('No orders found');
     }
 
-    const ordersWithPurchasedQuantity = orders.map((order) => ({
-      ...order,
-      products: order.products.map((productRelation) => ({
-        ...productRelation.product,
-        quantityPurchased: productRelation.stock,
-      })),
-    }));
-
-    return ordersWithPurchasedQuantity;
+    return orders;
   }
 
   async createInitialOrder(name: User['name']) {
@@ -101,36 +86,30 @@ export class OrdersService implements OrderRepository {
     return order;
   }
 
+  async cancel(id: Order['id']) {
+    const order = await this.db.order.update({
+      where: { id },
+      data: {
+        status: 'CANCELLED',
+      },
+    });
+
+    return order;
+  }
+
   async update(order: UpdateOrderDTO & { userId?: string }, id: Order['id']) {
-    const { products, ...orderData } = order;
+    const { product, ...orderData } = order;
 
     const updatedOrder = await this.db.order.update({
       where: { id },
       data: {
         ...orderData,
         cardInfo: await this.hasher.hash(orderData.cardInfo ?? ''),
+        productId: product,
       },
     });
 
-    if (products && products.length > 0) {
-      await this.db.productRelation.deleteMany({
-        where: { orderId: id },
-      });
-
-      for (const product of products) {
-        const { productId, stock } = product;
-
-        await this.products.decreaseStock(productId, stock);
-
-        await this.db.productRelation.create({
-          data: {
-            orderId: id,
-            productId: productId,
-            stock: stock,
-          },
-        });
-      }
-    }
+    await this.products.decreaseStock(product ?? '', orderData.amount ?? 0);
 
     return updatedOrder;
   }
