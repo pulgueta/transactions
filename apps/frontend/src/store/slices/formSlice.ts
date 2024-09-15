@@ -5,12 +5,12 @@ import type { FrontendOrder } from "backend/react";
 
 export type FormState = Pick<
   FrontendOrder,
-  | "nameOnCard"
+  | "address"
   | "cardInfo"
+  | "city"
   | "cvv"
   | "expiryDate"
-  | "address"
-  | "city"
+  | "nameOnCard"
   | "state"
   | "zip"
 >;
@@ -18,8 +18,8 @@ export type FormState = Pick<
 const initialState: FormState = {
   nameOnCard: "",
   cardInfo: "",
-  cvv: "",
   expiryDate: "",
+  cvv: "",
   address: "",
   city: "",
   state: "",
@@ -32,6 +32,7 @@ const saveState = (state: FormState) => {
 
 const loadState = (): FormState => {
   const savedState = localStorage.getItem("customerDetails");
+
   return savedState ? JSON.parse(savedState) : initialState;
 };
 

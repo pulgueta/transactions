@@ -77,4 +77,10 @@ export class OrderEntity implements Order {
 
   @ApiProperty({ required: false })
   updatedAt: Date;
+
+  @ApiProperty({ required: false })
+  productId: string | null;
+
+  @ApiProperty({ required: false })
+  amount: number | null;
 }
