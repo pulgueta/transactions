@@ -62,7 +62,7 @@ export class OrderController {
       },
     );
 
-    const str = `${initialOrder.id}${order.orderTotal! * 100}COP${process.env.PRIVATE_INTEGRITY_KEY}`;
+    const str = `${initialOrder.id}${order.orderTotal! * 1000}COP${process.env.PRIVATE_INTEGRITY_KEY}`;
 
     const encondedText = new TextEncoder().encode(str);
     const hashBuffer = await crypto.subtle.digest('SHA-256', encondedText);
@@ -77,7 +77,7 @@ export class OrderController {
       {
         acceptance_token,
         reference: initialOrder.id,
-        amount_in_cents: order.orderTotal! * 100,
+        amount_in_cents: order.orderTotal! * 1000,
         currency: 'COP',
         signature,
         customer_email: 'money@yopmail.com',
@@ -106,7 +106,7 @@ export class OrderController {
       true,
     );
 
-    const timer = Math.floor(Math.random() * 1000) + 1500;
+    const timer = Math.floor(Math.random() * 1500) + 1500;
 
     // Intentionally waiting for a random time to simulate a possible failed transaction
     await wait(timer);

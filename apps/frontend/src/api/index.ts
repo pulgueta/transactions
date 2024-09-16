@@ -21,7 +21,7 @@ export type Order = {
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_API_URL}/api` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_API_URL}` }),
   endpoints: (builder) => ({
     getProducts: builder.query<FrontendProduct[], void>({
       query: () => "products",
@@ -41,7 +41,7 @@ export const productsApi = createApi({
           state: order.state,
           amount: order.amount,
           zip: order.zip,
-          orderTotal: order.orderTotal,
+          orderTotal: Math.ceil(order.orderTotal),
           product: order.product,
         },
       }),

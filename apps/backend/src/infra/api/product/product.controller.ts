@@ -5,18 +5,24 @@ import {
   Get,
   Post,
 } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 
-import { OrderEntity } from '@/domain/entities/order.entity';
 import { ProductsService } from '@/application/services/product.service';
 import { CreateProductDTO } from '@/domain/dto/product.dto';
+import { ProductEntity } from '@/domain/entities/product.entity';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get('/')
-  @ApiOkResponse({ type: OrderEntity })
+  @ApiOkResponse({ type: ProductEntity })
+  @ApiNotFoundResponse({ description: 'No products found' })
   async getProducts() {
     const products = await this.productsService.findAll();
 
@@ -24,6 +30,7 @@ export class ProductController {
   }
 
   @Post('/')
+  @ApiBody({ type: ProductEntity })
   @ApiBadRequestResponse({ description: 'Invalid data sent' })
   async createProduct(@Body() product: CreateProductDTO) {
     if (!product) {

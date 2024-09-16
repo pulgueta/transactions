@@ -1,33 +1,35 @@
-# `Turborepo` Vite starter
+# Transactions Monorepo
 
-This is an official starter Turborepo.
+This is a monorepo built with Turborepo. It contains the following apps:
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-vite
+```plaintext
+apps
+├── frontend
+├── backend
 ```
 
-## What's inside?
+## Development
 
-This Turborepo includes the following packages and apps:
+To begin working on the apps, setup the PostgreSQL database:
 
-### Apps and Packages
+```bash
+docker-compose up -d
+```
 
-- `docs`: a vanilla [vite](https://vitejs.dev) ts app
-- `web`: another vanilla [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component & utility library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Then, install the dependencies:
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+pnpm install
+```
 
-### Utilities
+Check for any environment variables that need to be set in the `.env` files in the apps.
 
-This Turborepo has some additional tools already setup for you:
+Finally, start the development servers:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+```bash
+pnpm dev
+
+# Or
+
+turbo dev
+```
