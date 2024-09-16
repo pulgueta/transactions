@@ -87,6 +87,6 @@
     "config": "seed.config.ts"
   },
   "prisma": {
-    "seed": "tsx ./seed.ts"
+    "seed": "prisma generate tsx ./seed.ts"
   }
 }

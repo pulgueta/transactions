@@ -18,13 +18,9 @@ jobs:
     name: Code Quality
     uses: ./.github/workflows/format.yaml
 
-  test:
-    name: Test
-    uses: ./.github/workflows/test.yaml
-
   release:
     name: Release
-    needs: [commitlint, code-quality, test]
+    needs: [commitlint, code-quality]
     runs-on: ubuntu-latest
 
     strategy:

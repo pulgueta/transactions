@@ -1,4 +1,4 @@
-import { useGetOrdersQuery } from "../api";
+import { useGetOrdersQuery } from "@/api";
 import { OrderDetails } from "@/components/order/order-details";
 
 export const Orders = () => {

@@ -27,9 +27,6 @@
     }
   },
   "include": [
-    "src",
-    "jest.setup.ts",
-    "babel.config.cjs",
-    "jest.config.ts"
+    "src"
   ]
 }

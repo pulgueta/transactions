@@ -12,9 +12,9 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 
-import { ProductsService } from '@/application/services/product.service';
-import { CreateProductDTO } from '@/domain/dto/product.dto';
-import { ProductEntity } from '@/domain/entities/product.entity';
+import { ProductsService } from '../../../application/services/product.service';
+import { CreateProductDTO } from '../../../domain/dto/product.dto';
+import { ProductEntity } from '../../../domain/entities/product.entity';
 
 @Controller('products')
 export class ProductController {
