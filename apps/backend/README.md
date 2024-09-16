@@ -64,3 +64,5 @@ pnpm dlx tsx seed.ts
 The database is modeled using Prisma. The schema can be found in [prisma/schema.prisma](prisma/schema.prisma). Here's a visual representation of the model:
 
 ![Database model](./data-model.png)
+
+Production URL [here](https://ec2-18-217-216-115.us-east-2.compute.amazonaws.com)

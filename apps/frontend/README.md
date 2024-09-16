@@ -33,3 +33,5 @@ pnpm test:watch
 
 pnpm test:cov
 ```
+
+Production URL [here](https://main.dwybj1z9s4trq.amplifyapp.com/)
