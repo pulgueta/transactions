@@ -6,6 +6,7 @@
 		"dev": "dotenv -- turbo dev",
 		"test": "dotenv -- turbo test",
 		"test:watch": "dotenv -- turbo test:watch",
+		"test:cov": "dotenv -- turbo test:cov",
 		"lint": "turbo lint --",
 		"format": "turbo format",
 		"format:ci": "turbo format:ci",

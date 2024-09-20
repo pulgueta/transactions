@@ -16,7 +16,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start": "node dist/main",
+    "start": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "pretest": "prisma generate",
     "test": "pnpm pretest && jest",
@@ -64,6 +64,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   },
   "jest": {
@@ -71,6 +72,11 @@
       "js",
       "json",
       "ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      ".module.ts",
+      "<rootDir>/app/main.ts",
+      ".dto.ts"
     ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
