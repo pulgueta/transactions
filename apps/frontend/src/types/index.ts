@@ -1,21 +1,23 @@
 export type OrderSummary = {
-  id: string;
-  userId: string | null;
-  orderTotal: number | null;
-  nameOnCard: string | null;
-  amount: number | null;
-  cardInfo: string | null;
-  expiryDate: string | null;
-  cvv: string | null;
-  address: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-  last4Digits: string | null;
-  status: OrderStatus | null;
-  createdAt: Date;
-  updatedAt: Date;
-  productId: string | null;
+  readonly id: string;
+  readonly userId: string;
+  readonly orderTotal: number;
+  readonly nameOnCard: string;
+  readonly amount: null;
+  readonly cardInfo: string;
+  readonly expiryDate: string;
+  readonly cvv: string;
+  readonly address: string;
+  readonly city: string;
+  readonly state: string;
+  readonly zip: string;
+  readonly last4Digits: string;
+  readonly status: OrderStatus;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly productId: string;
+  readonly Delivery: Delivery[];
+  readonly product: Product;
 };
 
 export type Delivery = {

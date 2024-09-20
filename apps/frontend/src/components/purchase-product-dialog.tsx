@@ -13,10 +13,10 @@ import { PurchaseDetails } from "./form/purchase-details";
 import { OrderSummary } from "./order/order-summary";
 import { useAppDispatch } from "@/store";
 import { addProduct } from "@/store/slices/productSlice";
-import type { Product } from "@/store/slices/productSlice";
+import type { SliceProduct } from "@/store/slices/productSlice";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 
-export const PurchaseProductDialog: FC<Product> = (prod) => {
+export const PurchaseProductDialog: FC<SliceProduct> = (prod) => {
   const dispatch = useAppDispatch();
 
   const setProduct = () => {
