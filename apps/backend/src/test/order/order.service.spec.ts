@@ -212,16 +212,24 @@ describe('OrdersService', () => {
 
   describe('cancel', () => {
     it('should cancel an order', async () => {
-      const cancelledOrder: Order = { ...mockOrder, status: 'CANCELLED' };
+      const cancelledOrder: Order = { ...mockOrder, status: 'DECLINED' };
 
       jest.spyOn(dbService.order, 'update').mockResolvedValue(cancelledOrder);
 
-      const result = await service.cancel('1');
+      const result = await service.cancel({
+        id: '1',
+        nameOnCard: mockOrder.nameOnCard ?? '',
+        product: mockOrder.productId,
+      });
 
       expect(result).toEqual(cancelledOrder);
       expect(dbService.order.update).toHaveBeenCalledWith({
         where: { id: '1' },
-        data: { status: 'CANCELLED' },
+        data: {
+          status: 'DECLINED',
+          nameOnCard: mockOrder.nameOnCard,
+          productId: mockOrder.productId,
+        },
       });
     });
   });

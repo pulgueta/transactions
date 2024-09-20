@@ -33,3 +33,7 @@ pnpm dev
 
 turbo dev
 ```
+
+## Next Steps
+
+All done! Now check for the README.md files in the apps for more information on how to work on them.

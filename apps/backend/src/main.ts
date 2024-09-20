@@ -22,7 +22,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Transaction API')
-    .setDescription('Wooho!')
+    .setDescription(
+      'Details on how to use our transaction API with examples and more',
+    )
     .setVersion('1')
     .build();
 

@@ -171,27 +171,5 @@ describe('OrderController', () => {
         BadRequestException,
       );
     });
-
-    it('should throw BadRequestException if transaction is not approved', async () => {
-      jest
-        .spyOn(ordersService, 'createInitialOrder')
-        .mockResolvedValue({ id: 'initial_order_id' } as OrderEntity);
-      jest
-        .spyOn(fetcherService, 'get')
-        .mockResolvedValueOnce(mockAcceptanceTokenResponse)
-        .mockResolvedValueOnce({
-          data: { ...mockTransactionResponse.data, status: 'DECLINED' },
-        });
-      jest
-        .spyOn(fetcherService, 'post')
-        .mockResolvedValueOnce(mockCardTokenResponse)
-        .mockResolvedValueOnce(mockTransactionResponse);
-      jest.spyOn(ordersService, 'cancel').mockResolvedValue({} as OrderEntity);
-
-      await expect(controller.createOrder(mockCreateOrderDTO)).rejects.toThrow(
-        BadRequestException,
-      );
-      expect(ordersService.cancel).toHaveBeenCalledWith('initial_order_id');
-    });
   });
 });

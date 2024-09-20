@@ -65,4 +65,6 @@ The database is modeled using Prisma. The schema can be found in [prisma/schema.
 
 ![Database model](./data-model.png)
 
-Production URL [here](https://ec2-18-217-216-115.us-east-2.compute.amazonaws.com)
+Production URL [here](http://ec2-35-153-182-194.compute-1.amazonaws.com/api/products)
+
+**Note**: As I don't own any domain, server URL is http only, but it can be fixed by having one and configurin it with NGINX.

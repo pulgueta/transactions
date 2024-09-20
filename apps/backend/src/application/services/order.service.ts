@@ -10,6 +10,12 @@ import { DeliveriesService } from './delivery.service';
 import { ProductsService } from './product.service';
 import { Argon2HashingService } from './hashing.service';
 
+type CancelledOrder = {
+  nameOnCard: User['name'];
+  id: Order['id'];
+  product: Order['productId'];
+};
+
 @Injectable()
 export class OrdersService implements OrderRepository {
   constructor(
@@ -86,11 +92,13 @@ export class OrdersService implements OrderRepository {
     return order;
   }
 
-  async cancel(id: Order['id']) {
+  async cancel({ nameOnCard, id, product }: CancelledOrder) {
     const order = await this.db.order.update({
       where: { id },
       data: {
-        status: 'CANCELLED',
+        status: 'DECLINED',
+        nameOnCard,
+        productId: product,
       },
     });
 

@@ -12,7 +12,7 @@ export type OrderSummary = {
   readonly state: string;
   readonly zip: string;
   readonly last4Digits: string;
-  readonly status: string;
+  readonly status: OrderStatus;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly productId: string;
@@ -23,7 +23,7 @@ export type OrderSummary = {
 export type Delivery = {
   readonly id: string;
   readonly orderId: string;
-  readonly status: string;
+  readonly status: DeliveryStatus;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 };
@@ -38,3 +38,6 @@ export type Product = {
   readonly createdAt: Date;
   readonly updatedAt: Date;
 };
+
+export type OrderStatus = "COMPLETED" | "DECLINED" | "PENDING";
+export type DeliveryStatus = "DELIVERED" | "PENDING";

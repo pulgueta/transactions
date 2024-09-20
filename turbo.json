@@ -32,6 +32,15 @@
 				".env*"
 			]
 		},
+		"test:cov": {
+			"dependsOn": [
+				"^test:cov"
+			],
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				".env*"
+			]
+		},
 		"build": {
 			"dependsOn": [
 				"^build"

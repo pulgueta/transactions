@@ -106,7 +106,7 @@ export class OrderController {
       true,
     );
 
-    const timer = Math.floor(Math.random() * 1500) + 1500;
+    const timer = Math.floor(Math.random() * 1500) + 2500;
 
     // Intentionally waiting for a random time to simulate a possible failed transaction
     await wait(timer);
@@ -117,9 +117,11 @@ export class OrderController {
     );
 
     if (transactionResult.data.status !== 'APPROVED') {
-      await this.ordersService.cancel(initialOrder.id);
-
-      throw new BadRequestException('Transaction was not approved');
+      return await this.ordersService.cancel({
+        id: initialOrder.id,
+        nameOnCard: order.nameOnCard ?? '',
+        product: order.product,
+      });
     }
 
     const createdOrder = await this.ordersService.create(

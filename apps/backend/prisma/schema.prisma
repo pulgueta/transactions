@@ -62,7 +62,7 @@ model Delivery {
 enum OrderStatus {
   PENDING
   COMPLETED
-  CANCELLED
+  DECLINED
 }
 
 enum DeliveryStatus {
