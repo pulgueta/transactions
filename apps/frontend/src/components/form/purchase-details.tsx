@@ -13,10 +13,10 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { updateFormField } from "@/store/slices/formSlice";
 import { toggleDrawer } from "@/store/slices/drawerSlice";
 import { createOrder } from "@/schemas/order";
-import { FrontendOrder } from "backend/react";
+import { OrderSummary } from "@/types";
 
 type FormProps = Pick<
-  FrontendOrder,
+  OrderSummary,
   | "address"
   | "cardInfo"
   | "city"

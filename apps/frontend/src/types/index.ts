@@ -1,42 +1,40 @@
 export type OrderSummary = {
-  readonly id: string;
-  readonly userId: string;
-  readonly orderTotal: number;
-  readonly nameOnCard: string;
-  readonly amount: null;
-  readonly cardInfo: string;
-  readonly expiryDate: string;
-  readonly cvv: string;
-  readonly address: string;
-  readonly city: string;
-  readonly state: string;
-  readonly zip: string;
-  readonly last4Digits: string;
-  readonly status: OrderStatus;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
-  readonly productId: string;
-  readonly Delivery: Delivery[];
-  readonly product: Product;
+  id: string;
+  userId: string | null;
+  orderTotal: number | null;
+  nameOnCard: string | null;
+  amount: number | null;
+  cardInfo: string | null;
+  expiryDate: string | null;
+  cvv: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  last4Digits: string | null;
+  status: OrderStatus | null;
+  createdAt: Date;
+  updatedAt: Date;
+  productId: string | null;
 };
 
 export type Delivery = {
-  readonly id: string;
-  readonly orderId: string;
-  readonly status: DeliveryStatus;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  id: string;
+  orderId: string;
+  status: "PENDING" | "DELIVERED" | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type Product = {
-  readonly id: string;
-  readonly name: string;
-  readonly imageUrl: string;
-  readonly stock: number;
-  readonly description: string;
-  readonly price: number;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  id: string;
+  name: string;
+  imageUrl: string;
+  stock: number;
+  description: string;
+  price: number;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type OrderStatus = "COMPLETED" | "DECLINED" | "PENDING";

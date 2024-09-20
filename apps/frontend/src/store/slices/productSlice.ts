@@ -1,14 +1,14 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { FrontendProduct } from "backend/react";
+import { Product } from "@/types";
 
-export type Product = Pick<
-  FrontendProduct,
+export type SliceProduct = Pick<
+  Product,
   "id" | "name" | "imageUrl" | "stock" | "description" | "price"
 > & { quantity: number };
 
-const initialState: Product = {
+const initialState: SliceProduct = {
   id: "",
   name: "",
   imageUrl: "",
@@ -22,10 +22,10 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addProduct: (_, action: PayloadAction<Product>) => {
+    addProduct: (_, action: PayloadAction<SliceProduct>) => {
       return action.payload;
     },
-    updateQuantity: (state: Product, action: PayloadAction<number>) => {
+    updateQuantity: (state: SliceProduct, action: PayloadAction<number>) => {
       if (state) {
         return { ...state, quantity: action.payload };
       }
